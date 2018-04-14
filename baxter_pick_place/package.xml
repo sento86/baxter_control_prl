@@ -3,15 +3,15 @@
   <version>0.3.0</version>
   <description>Code for running MoveIt pick and place</description>
 
-  <maintainer email="davetcoleman@gmail.com">Dave Coleman</maintainer>
+  <maintainer email="vgirbes@idf.upv.es">Vicent Girbes Juan</maintainer>
 
   <license>BSD</license>
 
-  <url type="website">https://github.com/davetcoleman/baxter_cpp/</url>
-  <url type="bugtracker">https://github.com/davetcoleman/baxter_cpp/issues</url>
-  <url type="repository">https://github.com/davetcoleman/baxter</url>
+  <url type="website">https://github.com/sento86/baxter_pick_place/</url>
+  <url type="bugtracker">https://github.com/sento86/baxter_pick_place/issues</url>
+  <url type="repository">https://github.com/sento86/baxter_control_prl</url>
 
-  <author>Dave Coleman</author>
+  <author>Vicent Girbes Juan</author>
 
   <buildtool_depend>catkin</buildtool_depend>
 
