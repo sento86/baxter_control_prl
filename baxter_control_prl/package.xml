@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+  <name>baxter_control_prl</name>
+  <version>0.0.1</version>
+  <description>The baxter_control_prl package</description>
+
+  <maintainer email="vgirbes@idf.upv.es">Vicent Girbes Juan</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">https://github.com/</url>
+
+  <author email="vgirbes@idf.upv.es">Vicent Girbes Juan</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!--<run_depend>baxter_moveit_config</run_depend>
+  <run_depend>baxter_perception</run_depend>
+  <run_depend>baxter_moveit_scripts</run_depend>
+  <run_depend>baxter_ikfast</run_depend>
+  <run_depend>baxter_benchmarking</run_depend>-->
+
+  <run_depend>baxter_pick_place</run_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>
