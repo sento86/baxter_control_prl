@@ -17,6 +17,15 @@ find_package(catkin REQUIRED COMPONENTS
   #baxter_control
   roscpp
   cmake_modules
+  rospy
+  rospack
+  baxter_core_msgs
+  baxter_gazebo
+  baxter_interface
+  baxter_tools
+  baxter_tools
+  gazebo_ros
+  gazebo_msgs
 )
 
 #find_package(Eigen REQUIRED)
@@ -24,7 +33,16 @@ find_package(Boost REQUIRED system thread)
 
 catkin_package(
   INCLUDE_DIRS include
-  CATKIN_DEPENDS 
+  CATKIN_DEPENDS
+  rospy
+  rospack
+  baxter_core_msgs
+  baxter_gazebo
+  baxter_interface
+  baxter_tools
+  baxter_tools
+  gazebo_ros
+  gazebo_msgs
 )
 
 # Enable gdb to show line numbers
@@ -56,3 +74,23 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "-std=c++14 -stdlib=libc++")
     # message(${CMAKE_CXX_FLAGS})
 endif()
+
+#############
+## Install ##
+#############
+
+install(PROGRAMS
+   scripts/ik_pick_and_place_demo_force_torque.py
+   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(PROGRAMS
+   scripts/ik_pick_and_place_demo_force_torque_haptic.py
+   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+foreach(dir launch models)
+   install(DIRECTORY ${dir}/
+      DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
+endforeach(dir)
+

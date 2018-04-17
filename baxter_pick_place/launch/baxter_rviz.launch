@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="rqt_rviz" name="rviz_baxter" type="rqt_rviz" output="screen" args="-d $(find baxter_pick_place)/launch/rviz_kinect.rviz"/>
+
+</launch>

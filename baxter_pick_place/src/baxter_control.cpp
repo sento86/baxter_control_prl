@@ -132,23 +132,28 @@ public:
 
 	  //###############################################################
 
-		/*baxter_util_.clearGripper(std::string("right"));
+		baxter_util_.clearGripper(std::string("left"));
+		baxter_util_.clearGripper(std::string("right"));
 	  	ros::Duration(0.5).sleep();
 
+	  	baxter_util_.calibrateGripper(std::string("left"));
 	  	baxter_util_.calibrateGripper(std::string("right"));
-	  	ros::Duration(5.0).sleep();*/
+	  	ros::Duration(2.0).sleep();
 
 	  	double holding_force=30.0;
 	  	double velocity=50.0;
 	  	double dead_zone=5.0;
 	  	double moving_force=40.0;
 
+	  	baxter_util_.configureGripper(std::string("left"), holding_force, velocity, dead_zone, moving_force);
 	  	baxter_util_.configureGripper(std::string("right"), holding_force, velocity, dead_zone, moving_force);
 		ros::Duration(0.5).sleep();
 
+	  	baxter_util_.openGripper(std::string("left"));
 	  	baxter_util_.openGripper(std::string("right"));
 		ros::Duration(0.5).sleep();
 
+	  	baxter_util_.closeGripper(std::string("left"));
 	  	baxter_util_.closeGripper(std::string("right"));
 		ros::Duration(0.5).sleep();
 
@@ -159,6 +164,10 @@ public:
 		    baxter_util_.rightLimbInitial();
 		    ros::Duration(0.1).sleep();
 	    }
+
+	    baxter_util_.leftLimbInitialAction();
+	    baxter_util_.rightLimbInitialAction();
+
 
 	    //###############################################################
 

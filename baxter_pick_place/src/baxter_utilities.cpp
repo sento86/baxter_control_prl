@@ -62,6 +62,18 @@ BaxterUtilities::BaxterUtilities()
   pub_left_cmd_ = nh.advertise<baxter_core_msgs::JointCommand>("/robot/limb/left/joint_command", 1);
   pub_right_cmd_ = nh.advertise<baxter_core_msgs::JointCommand>("/robot/limb/right/joint_command", 1);
 
+  //pub_left_action_cmd_ = nh.advertise<control_msgs::JointTrajectoryActionGoal>("/robot/limb/left/joint_trajectory_action/goal", 1);
+  //pub_right_action_cmd_ = nh.advertise<control_msgs::JointTrajectoryActionGoal>("/robot/limb/right/joint_trajectory_action/goal", 1);
+
+  //pub_left_action_cmd_ = nh.advertise<control_msgs::FollowJointTrajectoryAction>("/robot/limb/left/follow_joint_trajectory/goal", 1);
+  //pub_right_action_cmd_ = nh.advertise<control_msgs::FollowJointTrajectoryAction>("/robot/limb/right/follow_joint_trajectory/goal", 1);
+
+  left_action_client_ = new joint_action_client("robot/limb/left/follow_joint_trajectory",true);
+  right_action_client_ = new joint_action_client("robot/limb/right/follow_joint_trajectory",true);
+
+  left_action_client_->waitForServer();
+  right_action_client_->waitForServer();
+
   // ---------------------------------------------------------------------------------------------
   // Start the state subscriber
   //sub_baxter_state_ = nh.subscribe<baxter_msgs::AssemblyState>(BAXTER_STATE_TOPIC, 1, &BaxterUtilities::stateCallback, this);
@@ -109,6 +121,16 @@ BaxterUtilities::BaxterUtilities()
 
   left_joints_.position.resize(left_joints_.name.size());
 
+  // Action
+  for(int i=0;i<left_msg_.names.size();i++)
+	  left_action_msg_.trajectory.joint_names.push_back(left_msg_.names[i]);
+
+  trajectory_msgs::JointTrajectoryPoint left_points_;
+  for(int i=0;i<left_msg_.command.size();i++)
+	  left_points_.positions.push_back(left_msg_.command[i]);
+
+  left_action_msg_.trajectory.points.push_back(left_points_);
+
   // ---------------------------------------------------------------------------------------------
   // command in effort/velocity/position mode
   //right_msg_.mode = baxter_core_msgs::JointCommand::TORQUE_MODE;
@@ -141,6 +163,27 @@ BaxterUtilities::BaxterUtilities()
 	  right_joints_.name.push_back(right_msg_.names[i]);
 
   right_joints_.position.resize(right_joints_.name.size());
+
+ // Action
+  for(int i=0;i<right_msg_.names.size();i++)
+	  right_action_msg_.trajectory.joint_names.push_back(right_msg_.names[i]);
+
+  trajectory_msgs::JointTrajectoryPoint right_points_;
+  for(int i=0;i<right_msg_.command.size();i++)
+	  right_points_.positions.push_back(right_msg_.command[i]);
+  right_points_.time_from_start=ros::Duration(5.0);
+  right_action_msg_.trajectory.points.push_back(right_points_);
+
+  for(int i=0;i<right_msg_.command.size();i++)
+	  right_points_.positions.push_back(0.75*right_msg_.command[i]);
+  right_points_.time_from_start=ros::Duration(3.0);
+  right_action_msg_.trajectory.points.push_back(right_points_);
+
+  for(int i=0;i<right_msg_.command.size();i++)
+	  right_points_.positions.push_back(1.25*right_msg_.command[i]);
+  right_points_.time_from_start=ros::Duration(8.0);
+  right_action_msg_.trajectory.points.push_back(right_points_);
+
   // ---------------------------------------------------------------------------------------------
 }
 
@@ -572,6 +615,31 @@ bool BaxterUtilities::leftLimbInitial(){
 bool BaxterUtilities::rightLimbInitial(){
 
   pub_right_cmd_.publish(right_initial_msg_);
+
+  return true;
+}
+
+bool BaxterUtilities::leftLimbInitialAction(){
+
+  left_action_msg_.trajectory.header.stamp=ros::Time::now();
+
+  left_action_client_->sendGoal(left_action_msg_);
+  left_action_client_->waitForResult(ros::Duration(10.0));
+
+  if (left_action_client_->getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+	  printf("Yay! The left action was done!");
+
+  //pub_left_action_cmd_.publish(left_initial_action_msg_);
+
+  return true;
+}
+
+bool BaxterUtilities::rightLimbInitialAction(){
+
+  right_action_client_->sendGoal(right_action_msg_);
+  right_action_client_->waitForResult(ros::Duration(5.0));
+
+  //pub_right_action_cmd_.publish(right_initial_action_msg_);
 
   return true;
 }
