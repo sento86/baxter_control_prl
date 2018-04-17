@@ -68,6 +68,13 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <sensor_msgs/JointState.h>
 
+#include <control_msgs/JointTrajectoryActionGoal.h>
+
+#include <control_msgs/FollowJointTrajectoryAction.h>
+#include <control_msgs/FollowJointTrajectoryGoal.h>
+
+#include <actionlib/client/simple_action_client.h>
+
 #include <string> // To use std::to_string()
 
 namespace baxter_control
@@ -106,6 +113,9 @@ public:
   ros::Publisher pub_left_cmd_;
   ros::Publisher pub_right_cmd_;
 
+  ros::Publisher pub_left_action_cmd_;
+  ros::Publisher pub_right_action_cmd_;
+
   ros::Subscriber sub_baxter_state_;
   ros::Subscriber sub_left_gripper_state_;
   ros::Subscriber sub_right_gripper_state_;
@@ -124,6 +134,19 @@ public:
   baxter_core_msgs::JointCommand right_initial_msg_;
   baxter_core_msgs::JointCommand left_msg_;
   baxter_core_msgs::JointCommand right_msg_;
+
+  control_msgs::JointTrajectoryActionGoal left_initial_action_msg_;
+  control_msgs::JointTrajectoryActionGoal right_initial_action_msg_;
+
+  //control_msgs::FollowJointTrajectoryAction left_action_msg_;
+  //control_msgs::FollowJointTrajectoryAction right_action_msg_;
+  control_msgs::FollowJointTrajectoryGoal left_action_msg_;
+  control_msgs::FollowJointTrajectoryGoal right_action_msg_;
+
+  typedef actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction> joint_action_client;
+
+  joint_action_client* left_action_client_;
+  joint_action_client* right_action_client_;
 
   // Interface with MoveIt
   //boost::scoped_ptr<move_group_interface::MoveGroup> move_group_;
@@ -202,6 +225,9 @@ public:
 
   bool leftLimbInitial();
   bool rightLimbInitial();
+
+  bool leftLimbInitialAction();
+  bool rightLimbInitialAction();
 
   bool leftLimbCommand(baxter_core_msgs::JointCommand &cmd_left);
   bool rightLimbCommand(baxter_core_msgs::JointCommand &cmd_right);

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+
+  <!-- We resume the logic in empty_world.launch, changing the name of the world to be launched -->
+  <include file="$(find baxter_gazebo)/launch/baxter_world_force_torque.launch"/>
+
+  <!-- Start the Baxter pick and place demo -->
+  <node pkg="baxter_pick_place" type="ik_pick_and_place_demo_force_torque_haptic.py" name="ik_pick_and_place_demo" output="screen"/>
+
+</launch>
